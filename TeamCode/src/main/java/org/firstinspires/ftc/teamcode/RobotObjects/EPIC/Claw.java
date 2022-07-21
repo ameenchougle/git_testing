@@ -19,32 +19,32 @@ public class Claw {
     public DcMotorEx armLeft;
     public DcMotorEx armRight;
     //public DcMotorEx liftMotor;
-
     public double armInit = 0.0;
     public double finger1Init = 0.3;
     public double finger2Init = 0.3;
     public double armMin = 0.0;
     public double armMax = 0.5;
-    public double finger1Min = 0.2;
-    public double finger2Min = 0.2;
+    public double finger1Min = 0;
+    public double finger2Min = 0;
     public double finger1Max = 0.7;
     public double finger2Max = -0.7;
     //0 position
-    public double bucket1Min = 0.83;
-    public double bucket2Min = 0.;
+    public double bucket1Min = 0.653888888888889;
+    public double bucket2Min = 0.653888888888889;
     //Level 1
-    public double bucket1Level1 = 0.58;
-    public double bucket2Level1 = 0.58;
+    public double bucket1Level1 = 0.39833333;
+    public double bucket2Level1 = 0.40055555;
     //Level 2
-    public double bucket1Level2 = 0.26;
-    public double bucket2Level2 = 0.26;
+    public double bucket1Level2 = 0.0;
+    public double bucket2Level2 = 0.0;
     //Level 3
-    public double bucket1Level3 = 0.2;
-    public double bucket2Level3 = 0.2;
+    public double bucket1Level3 = 0.0;
+    public double bucket2Level3 = 0.0;
 
     //public double bucket1Max = 0.7;
     //public double bucket2Max = -0.7;
     public double liftPower = -0.2;
+    public double spinpower = 0.8;
     public LinearOpMode parent;
     public Telemetry telemetry;
     public double pos = 0.0;
@@ -66,6 +66,8 @@ public class Claw {
         clawBucket2.setPosition(bucket1Min);
         //arm = hardwareMap.get(DcMotorEx.class,"arm");
         //arm.setDirection(DcMotor.Direction.REVERSE);
+        armLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        armRight.setDirection(DcMotorEx.Direction.REVERSE);
 
         armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -98,13 +100,13 @@ public class Claw {
 
         }
         else if(level == 2){
-            position = 260;
+            position = 240;
             bucket1pos = bucket1Level2;
             bucket2pos = bucket2Level2;
 
         }
         else if(level == 3){
-            position = 380;
+            position = 340;
             bucket1pos = bucket1Level3;
             bucket2pos = bucket2Level3;
 
@@ -129,8 +131,8 @@ public class Claw {
         //arm.setTargetPosition(arm.getCurrentPosition() + position);
 
         if(position==0){
-            armLeft.setPower(0.2);
-            armRight.setPower(0.2);
+            armLeft.setPower(0.3);
+            armRight.setPower(0.3);
             parent.sleep(200);
         }
         else
@@ -168,8 +170,14 @@ public class Claw {
             armRight.setPower(speed);
             parent.sleep(100);
         }
-        else if(new_frontLeftTarget<0)
-            new_frontLeftTarget =0;
+        else if(new_frontLeftTarget<0) {
+
+
+            new_frontLeftTarget = 0;
+
+            armLeft.setTargetPosition(20);
+            armRight.setTargetPosition(20);
+        }
         else if(new_frontLeftTarget > limit)
             new_frontLeftTarget = limit;
             //}
@@ -285,5 +293,9 @@ public class Claw {
         telemetry.addData("Postion Claw 2:%d", clawFinger2.getPosition());
         telemetry.update();
         //parent.sleep(5000);
+    }
+    public void setBucketPosition(double position){
+        clawBucket1.setPosition(position);
+        clawBucket1.setPosition(position);
     }
 }
