@@ -26,7 +26,7 @@ public class touchSensorTest extends LinearOpMode {
         //revert test two
         while (opModeIsActive()) {
          if(touch.isPressed()) {
-             servo.setPosition(0);
+
          } else {
              servo.setPosition(1);
          }
